@@ -23,11 +23,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
         // Initialize Firebase Auth
         auth = Firebase.auth
         val currentUSer = auth.currentUser
-        if(currentUSer!= null){
+        if (currentUSer != null) {
             val intent = Intent(this, FeedActivity::class.java)
             startActivity(intent)
             finish()
@@ -87,9 +86,5 @@ class MainActivity : AppCompatActivity() {
                     println("createUserWithEmail:failure ${it.localizedMessage}")
                 }
         }
-
-
-
-
     }
 }

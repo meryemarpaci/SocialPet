@@ -32,31 +32,28 @@ class UploadActivity : AppCompatActivity() {
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private var selectedPic: Uri? = null
     private lateinit var auth: FirebaseAuth
-    private lateinit var firestore : FirebaseFirestore
-    private lateinit var storage : FirebaseStorage
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
         registerLauncher()
-
         auth = Firebase.auth
         firestore = Firebase.firestore
-        storage=Firebase.storage
-
+        storage = Firebase.storage
     }
 
     fun upload(view: View) {
         //universal unique id, java sınıfından, uzun
         val uuid = UUID.randomUUID()
-        val imageName="$uuid.jpg"
+        val imageName = "$uuid.jpg"
         val reference = storage.reference
         val imageReference = reference.child("images").child(imageName)
 
-        if(selectedPic != null) {
+        if (selectedPic != null) {
             imageReference.putFile(selectedPic!!).addOnSuccessListener {
                 //Download urlyi al firestore a kaydet
                 val uploadPictureReference = storage.reference.child("images").child(imageName)
@@ -64,31 +61,26 @@ class UploadActivity : AppCompatActivity() {
                     val downloadUrl = it.toString()
 
                     val postMap = hashMapOf<String, Any>()
-                    postMap.put("downloadUrl",downloadUrl)
-                    postMap.put("userEmail",auth.currentUser!!.email!!)
-                    postMap.put("comment",binding.comment.text.toString())
-                    postMap.put("date",Timestamp.now())
+                    postMap.put("downloadUrl", downloadUrl)
+                    postMap.put("userEmail", auth.currentUser!!.email!!)
+                    postMap.put("comment", binding.comment.text.toString())
+                    postMap.put("date", Timestamp.now())
 
                     firestore.collection("Posts").add(postMap).addOnSuccessListener {
                         finish()
 
                     }.addOnFailureListener {
-                        Toast.makeText(this@UploadActivity,it.localizedMessage,Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@UploadActivity, it.localizedMessage, Toast.LENGTH_LONG)
+                            .show()
 
                     }
 
-
                 }
-
             }.addOnFailureListener {
-                Toast.makeText(this,it.localizedMessage,Toast.LENGTH_LONG).show()
-
+                Toast.makeText(this, it.localizedMessage, Toast.LENGTH_LONG).show()
             }
         }
-
     }
-
-
 
     fun selectImg(view: View) {
 
@@ -111,24 +103,17 @@ class UploadActivity : AppCompatActivity() {
                         .setAction("Give Permission") {
                             //izin iste
                             permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
-
-
                         }.show()
                 } else {
                     //göstermeden iste
                     permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
-
                 }
-
             } else {
                 //Galeriden bir intentin urisini al
                 val intentToGallery =
                     Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 activityResultLauncher.launch(intentToGallery)
-
-
             }
-
         } else {
             //Android 32- -> READ_EXTERNAL_STORAGE
 
@@ -149,26 +134,18 @@ class UploadActivity : AppCompatActivity() {
                         .setAction("Give Permission", View.OnClickListener {
                             //izin iste
                             permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-
                         }).show()
                 } else {
                     //göstermeden iste
                     permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-
                 }
-
             } else {
                 //Galeriden bir intentin urisini al
                 val intentToGallery =
                     Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 activityResultLauncher.launch(intentToGallery)
-
-
             }
         }
-
-
     }
 
     private fun registerLauncher() {
@@ -185,7 +162,6 @@ class UploadActivity : AppCompatActivity() {
                         }
                     }
                 }
-
             }
         permissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
@@ -194,16 +170,11 @@ class UploadActivity : AppCompatActivity() {
                     val intentToGallery =
                         Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                     activityResultLauncher.launch(intentToGallery)
-
-
                 } else {
                     Toast.makeText(this@UploadActivity, "Permission needed", Toast.LENGTH_LONG)
                         .show()
-
-
                 }
 
             }
-
     }
 }
