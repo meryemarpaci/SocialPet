@@ -32,7 +32,7 @@ class FeedActivity : AppCompatActivity() {
         setContentView(view)
         auth = Firebase.auth
         db = Firebase.firestore
-        postArrayList = ArrayList<Post>()
+        postArrayList = ArrayList()
         getData()
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         feedRecyclerAdapter = FeedRecyclerAdapter(postArrayList)
@@ -55,8 +55,14 @@ class FeedActivity : AppCompatActivity() {
                                 val comment = document.get("comment") as String
                                 val userEmail = document.get("userEmail") as String
                                 val downloadUrl = document.get("downloadUrl") as String
+                                val username = document.get("userName") as? String
 
-                                val post = Post(userEmail, comment, downloadUrl)
+                                val post = Post(
+                                    email = userEmail,
+                                    comment = comment,
+                                    downloadUrl = downloadUrl,
+                                    userName = username ?: userEmail
+                                )
                                 postArrayList.add(post)
                             }
                             feedRecyclerAdapter.notifyDataSetChanged()

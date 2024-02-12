@@ -9,8 +9,7 @@ import com.squareup.picasso.Picasso
 
 class FeedRecyclerAdapter(private val postList: ArrayList<Post>) :
     RecyclerView.Adapter<FeedRecyclerAdapter.PostHolder>() {
-    class PostHolder(val binding: RecyclerRowBinding) : RecyclerView.ViewHolder(binding.root) {
-    }
+    class PostHolder(val binding: RecyclerRowBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
         val binding = RecyclerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,7 +19,7 @@ class FeedRecyclerAdapter(private val postList: ArrayList<Post>) :
     override fun getItemCount(): Int = postList.size
 
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
-        holder.binding.recyclerEmailText.text = postList.get(position).email
+        holder.binding.recyclerEmailText.text = postList.get(position).userName
         holder.binding.recyclerCommentText.text = postList.get(position).comment
         Picasso.get().load(postList.get(position).downloadUrl)
             .into(holder.binding.recyclerImageView)

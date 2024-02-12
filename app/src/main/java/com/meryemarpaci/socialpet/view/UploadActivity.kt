@@ -64,6 +64,7 @@ class UploadActivity : AppCompatActivity() {
                     postMap.put("downloadUrl", downloadUrl)
                     postMap.put("userEmail", auth.currentUser!!.email!!)
                     postMap.put("comment", binding.comment.text.toString())
+                    postMap.put("userName", auth.currentUser!!.displayName.orEmpty())
                     postMap.put("date", Timestamp.now())
 
                     firestore.collection("Posts").add(postMap).addOnSuccessListener {

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SocialPet</string>
+    <string name="content_description_image_view">Image</string>
+    <string name="button_login">Login</string>
+    <string name="don_t_have_an_account_text">Don\'t have an account ?</string>
+    <string name="create_account_text">Create Account</string>
+    <string name="email_hint">E Mail</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username (Optional)</string>
 </resources>

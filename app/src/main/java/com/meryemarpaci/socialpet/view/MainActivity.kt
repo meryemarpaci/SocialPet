@@ -1,12 +1,11 @@
 package com.meryemarpaci.socialpet.view
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.meryemarpaci.socialpet.databinding.ActivityMainBinding
@@ -21,70 +20,81 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
+
         // Initialize Firebase Auth
         auth = Firebase.auth
-        val currentUSer = auth.currentUser
-        if (currentUSer != null) {
-            val intent = Intent(this, FeedActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        val currentUser = auth.currentUser
 
-        binding.button3.setOnClickListener {
-            email = binding.username.text.toString()
-            password = binding.password.text.toString()
+        currentUser?.let { goToTheFeedActivity() }
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    println("create user2")
-                    Log.d(TAG, "create")
-                    if (task.isSuccessful) {
-                        val intent = Intent(this, FeedActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        println("createUserWithEmail:failure ${task.exception}")
-                        Toast.makeText(
-                            this,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+        with(binding) {
+            buttonCreateAccount.setOnClickListener {
+                email = editTextEmail.text.toString()
+                password = editTextPassword.text.toString()
+
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this@MainActivity) { task ->
+                        if (task.isSuccessful) {
+                            val username = editTextUsername.text.toString()
+
+                            val profile = UserProfileChangeRequest.Builder()
+                                .setDisplayName(username.ifEmpty { email })
+                                .build()
+
+                            auth.currentUser?.updateProfile(profile)?.addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    goToTheFeedActivity()
+                                } else {
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        "Could not register username",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+
+                                    goToTheFeedActivity()
+                                }
+                            }
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Authentication failed.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
                     }
-                }
-                .addOnFailureListener {
-                    println("createUserWithEmail:failure ${it.localizedMessage}")
-                }
-        }
-
-        binding.buttonLogin.setOnClickListener {
-            email = binding.username.text.toString()
-            password = binding.password.text.toString()
-            println("login")
-            println("login: auth = ${auth.currentUser}")
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    println("sign in")
-                    if (task.isSuccessful) {
-                        val intent = Intent(this, FeedActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        println("signInWithEmail:failure ${task.exception}")
-                        Toast.makeText(
-                            this,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                    .addOnFailureListener {
+                        println("createUserWithEmail:failure ${it.localizedMessage}")
                     }
-                }
-                .addOnFailureListener {
-                    println("createUserWithEmail:failure ${it.localizedMessage}")
-                }
+            }
+
+            buttonLogin.setOnClickListener {
+                email = editTextEmail.text.toString()
+                password = editTextPassword.text.toString()
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this@MainActivity) { task ->
+                        if (task.isSuccessful) {
+                            goToTheFeedActivity()
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Authentication failed.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                    }
+                    .addOnFailureListener {
+                        println("createUserWithEmail:failure ${it.localizedMessage}")
+                    }
+            }
         }
+    }
+
+    private fun goToTheFeedActivity() {
+        val intent = Intent(this@MainActivity, FeedActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

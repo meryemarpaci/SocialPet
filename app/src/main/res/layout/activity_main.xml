@@ -8,72 +8,87 @@
     tools:context=".view.MainActivity">
 
     <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
+        android:id="@+id/editTextEmail"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="200dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="64dp"
+        android:autofillHints=""
+        android:hint="@string/email_hint"
+        android:inputType="textEmailAddress"
         android:textColor="#000000"
-        android:textColorHighlight="#504949"
         android:textColorHint="#6C6363"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
+        android:id="@+id/editTextPassword"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="text"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="12dp"
+        android:autofillHints=""
+        android:hint="@string/password_hint"
+        android:inputType="textPassword"
         android:textColor="#000000"
-        android:textColorHighlight="#504949"
         android:textColorHint="#6C6363"
-        app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="12dp"
+        android:autofillHints=""
+        android:hint="@string/username_hint"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textColorHint="#6C6363"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="104dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="300dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/yesil"
-        android:text="Login"
+        android:text="@string/button_login"
+        android:textAllCaps="false"
         android:textColor="#F2F1EB"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="156dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/yesil"
-        android:text="Create Account"
-        android:textColor="#F2F1EB"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        app:layout_constraintTop_toBottomOf="@id/editTextUsername" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewCreateAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Don't have an account ?"
+        android:layout_marginTop="64dp"
+        android:text="@string/don_t_have_an_account_text"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+
+    <Button
+        android:id="@+id/buttonCreateAccount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/yesil"
+        android:text="@string/create_account_text"
+        android:textAllCaps="false"
+        android:textColor="#F2F1EB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAccount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
