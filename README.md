@@ -1,6 +1,6 @@
 # İnformation
 This social media app was developed for animals. 
-After creating an account and logging in, you can share your photos and comments. 
+After creating an account and logging in, you can share your photos and comments. Used firebase for user registration. User data stored in firestore database.
 New features coming soon
 
 
